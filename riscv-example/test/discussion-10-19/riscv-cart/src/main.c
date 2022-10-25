@@ -7,7 +7,8 @@ uint32_t getTicks(void);
 uint32_t getStatus(void);
 
 volatile char *VIDEO_MEMORY = (volatile char *)(0x50000000 + 0xFE800);
-int main() {
+int main()
+{
     int a = 4;
     int b = 12;
     int last_global = 42;
@@ -27,34 +28,47 @@ int main() {
     VIDEO_MEMORY[11] = '!';
     VIDEO_MEMORY[12] = 'X';
 
-
-    while (1) {
+    while (1)
+    {
         global = getTicks();
-        if(global != last_global){
+        if (global != last_global)
+        {
             controller_status = getStatus();
-            if(controller_status){
+            if (controller_status)
+            {
                 VIDEO_MEMORY[x_pos] = ' ';
-                if(controller_status & 0x1){
-                    if(x_pos & 0x3F){
+                if (controller_status & 0x1)
+                {
+                    if (x_pos & 0x3F)
+                    {
                         x_pos--;
+                        VIDEO_MEMORY[x_pos] = '1';
                     }
                 }
-                if(controller_status & 0x2){
-                    if(x_pos >= 0x40){
+                if (controller_status & 0x2)
+                {
+                    if (x_pos >= 0x40)
+                    {
                         x_pos -= 0x40;
+                        VIDEO_MEMORY[x_pos] = '2';
                     }
                 }
-                if(controller_status & 0x4){
-                    if(x_pos < 0x8C0){
+                if (controller_status & 0x4)
+                {
+                    if (x_pos < 0x8C0)
+                    {
                         x_pos += 0x40;
+                        VIDEO_MEMORY[x_pos] = '3';
                     }
                 }
-                if(controller_status & 0x8){
-                    if((x_pos & 0x3F) != 0x3F){
+                if (controller_status & 0x8)
+                {
+                    if ((x_pos & 0x3F) != 0x3F)
+                    {
                         x_pos++;
+                        VIDEO_MEMORY[x_pos] = '4';
                     }
                 }
-                VIDEO_MEMORY[x_pos] = 'X';
             }
             last_global = global;
         }

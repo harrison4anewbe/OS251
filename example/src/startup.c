@@ -109,5 +109,10 @@ uint32_t c_system_call(uint32_t a0, uint32_t a1, uint32_t a2, uint32_t a3, uint3
             return 1;
         }
     }
+    else if (a4 = 2)
+    {
+        MODE_RIGISTER = 0x00000000;
+        return 0;
+    }
     return -1;
 }

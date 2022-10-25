@@ -16,7 +16,7 @@ _start:
     
 
 .section .text, "ax"
-.global getTicks, getStatus, getMode
+.global getTicks, getStatus, getMode, getModeFinished
 getTicks:
     li a5, 0
     ecall
@@ -25,5 +25,8 @@ getStatus:
     ecall
 getMode:
     li a4, 1
+    ecall
+getModeFinished:
+    li a4, 2
     ecall
 .end

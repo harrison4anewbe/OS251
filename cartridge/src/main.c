@@ -2,10 +2,12 @@
 
 volatile int global = 42;
 volatile uint32_t controller_status = 0;
+volatile uint32_t mode_status = 0;
 
 uint32_t getTicks(void);
 uint32_t getStatus(void);
 uint32_t getMode(void);
+uint32_t getModeFinished(void);
 
 // #define PALETTE (*((volatile uint32_t *)0x500FC000))
 // #define background (*((volatile uint32_t *)0x50000000))
@@ -34,7 +36,7 @@ int main()
     VIDEO_MEMORY[10] = 'd';
     VIDEO_MEMORY[11] = '!';
     VIDEO_MEMORY[12] = 'X';
-    int cnt = 0;
+
     while (1)
     {
         global = getTicks();
@@ -43,11 +45,28 @@ int main()
             controller_status = getStatus();
             if (controller_status)
             {
-                int tmp;
-                tmp = getMode();
-                // Palette
-                if (cnt % 2 == 0)
+                if (mode_status)
                 {
+                    mode_status = getModeFinished();
+                    VIDEO_MEMORY[0] = 'H';
+                    VIDEO_MEMORY[1] = 'e';
+                    VIDEO_MEMORY[2] = 'l';
+                    VIDEO_MEMORY[3] = 'l';
+                    VIDEO_MEMORY[4] = 'o';
+                    VIDEO_MEMORY[5] = ' ';
+                    VIDEO_MEMORY[6] = 'W';
+                    VIDEO_MEMORY[7] = 'o';
+                    VIDEO_MEMORY[8] = 'r';
+                    VIDEO_MEMORY[9] = 'l';
+                    VIDEO_MEMORY[10] = 'd';
+                    VIDEO_MEMORY[11] = '!';
+                    VIDEO_MEMORY[12] = 'X';
+                }
+                else
+                {
+                    VIDEO_MEMORY[0] = '2';
+                    mode_status = getMode();
+                    // Palette
                     for (int i = 0; i < 256; i++)
                     {
                         SPRITE_PALETTE_0[i] = 0xff000000 + i;
@@ -67,26 +86,6 @@ int main()
                         }
                     }
                 }
-                else
-                {
-                    if (tmp)
-                    {
-                        VIDEO_MEMORY[0] = '1';
-                    }
-                    VIDEO_MEMORY[1] = 'e';
-                    VIDEO_MEMORY[2] = 'l';
-                    VIDEO_MEMORY[3] = 'l';
-                    VIDEO_MEMORY[4] = 'o';
-                    VIDEO_MEMORY[5] = ' ';
-                    VIDEO_MEMORY[6] = 'W';
-                    VIDEO_MEMORY[7] = 'o';
-                    VIDEO_MEMORY[8] = 'r';
-                    VIDEO_MEMORY[9] = 'l';
-                    VIDEO_MEMORY[10] = 'd';
-                    VIDEO_MEMORY[11] = '!';
-                    VIDEO_MEMORY[12] = 'X';
-                }
-                cnt += 1;
             }
             last_global = global;
         }

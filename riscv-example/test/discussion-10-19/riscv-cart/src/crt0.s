@@ -18,9 +18,9 @@ _start:
 .section .text, "ax"
 .global getTicks, getStatus
 getTicks:
-    li a5, 0
+    li a4, 0
     ecall
 getStatus:
-    li a5, 1
+    li a4, 1
     ecall
 .end
