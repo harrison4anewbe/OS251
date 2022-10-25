@@ -4,7 +4,8 @@ volatile int global = 42;
 volatile uint32_t controller_status = 0;
 
 volatile char *VIDEO_MEMORY = (volatile char *)(0x50000000 + 0xFE800);
-int main() {
+int main()
+{
     int a = 4;
     int b = 12;
     int last_global = 42;
@@ -24,29 +25,39 @@ int main() {
     VIDEO_MEMORY[11] = '!';
     VIDEO_MEMORY[12] = 'X';
 
-
-    while (1) {
+    while (1)
+    {
         int c = a + b + global;
-        if(global != last_global){
-            if(controller_status){
+        if (global != last_global)
+        {
+            if (controller_status)
+            {
                 VIDEO_MEMORY[x_pos] = ' ';
-                if(controller_status & 0x1){
-                    if(x_pos & 0x3F){
+                if (controller_status & 0x1)
+                {
+                    if (x_pos & 0x3F)
+                    {
                         x_pos--;
                     }
                 }
-                if(controller_status & 0x2){
-                    if(x_pos >= 0x40){
+                if (controller_status & 0x2)
+                {
+                    if (x_pos >= 0x40)
+                    {
                         x_pos -= 0x40;
                     }
                 }
-                if(controller_status & 0x4){
-                    if(x_pos < 0x8C0){
+                if (controller_status & 0x4)
+                {
+                    if (x_pos < 0x8C0)
+                    {
                         x_pos += 0x40;
                     }
                 }
-                if(controller_status & 0x8){
-                    if((x_pos & 0x3F) != 0x3F){
+                if (controller_status & 0x8)
+                {
+                    if ((x_pos & 0x3F) != 0x3F)
+                    {
                         x_pos++;
                     }
                 }
